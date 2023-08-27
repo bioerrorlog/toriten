@@ -1,3 +1,3 @@
 # toriten
 
-My util library for Ebitengine.
+Utils for my Ebitengine games.
