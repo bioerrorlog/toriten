@@ -69,5 +69,9 @@ func (b *Button) Draw(screen *ebiten.Image) {
 	text.Draw(screen, b.buttonText, basicfont.Face7x13, textX, textY, color.White)
 }
 
+func (b *Button) X() int          { return b.x }
+func (b *Button) Y() int          { return b.y }
+func (b *Button) Width() int      { return b.width }
+func (b *Button) Height() int     { return b.height }
 func (b *Button) IsClicked() bool { return b.isClicked }
 func (b *Button) Text() string    { return b.buttonText }
