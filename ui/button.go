@@ -19,15 +19,15 @@ type Button struct {
 	isLastPressed bool
 }
 
-func NewButton(x, y, width, height int, buttonText string) (*Button, error) {
+func NewButton(x, y, width, height int, buttonText string, color color.RGBA, colorPressed color.RGBA) (*Button, error) {
 	b := &Button{
 		X:             x,
 		Y:             y,
 		Width:         width,
 		Height:        height,
 		ButtonText:    buttonText,
-		Color:         color.RGBA{R: 171, G: 104, B: 255, A: 255},
-		ColorPressed:  color.RGBA{R: 171 - 20, G: 104 - 20, B: 255 - 20, A: 255},
+		Color:         color,
+		ColorPressed:  colorPressed,
 		isLastPressed: false,
 	}
 	return b, nil
