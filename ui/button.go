@@ -9,25 +9,25 @@ import (
 )
 
 type Button struct {
-	x, y          int
-	width, height int
-	color         color.RGBA
-	colorPressed  color.RGBA
-	buttonText    string
-	isPressed     bool
-	isClicked     bool // Clicked: the button was pressed in the last frame and is no longer pressed
+	X, Y          int
+	Width, Height int
+	Color         color.RGBA
+	ColorPressed  color.RGBA
+	ButtonText    string
+	IsPressed     bool
+	IsClicked     bool // Clicked: the button was pressed in the last frame and is no longer pressed
 	isLastPressed bool
 }
 
 func NewButton(x, y, width, height int, buttonText string) (*Button, error) {
 	b := &Button{
-		x:             x,
-		y:             y,
-		width:         width,
-		height:        height,
-		buttonText:    buttonText,
-		color:         color.RGBA{R: 171, G: 104, B: 255, A: 255},
-		colorPressed:  color.RGBA{R: 171 - 20, G: 104 - 20, B: 255 - 20, A: 255},
+		X:             x,
+		Y:             y,
+		Width:         width,
+		Height:        height,
+		ButtonText:    buttonText,
+		Color:         color.RGBA{R: 171, G: 104, B: 255, A: 255},
+		ColorPressed:  color.RGBA{R: 171 - 20, G: 104 - 20, B: 255 - 20, A: 255},
 		isLastPressed: false,
 	}
 	return b, nil
@@ -36,42 +36,35 @@ func NewButton(x, y, width, height int, buttonText string) (*Button, error) {
 func (b *Button) Update() error {
 	x, y := ebiten.CursorPosition()
 
-	b.isPressed = x >= b.x && x <= b.x+b.width && y >= b.y && y <= b.y+b.height && ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft)
+	b.IsPressed = x >= b.X && x <= b.X+b.Width && y >= b.Y && y <= b.Y+b.Height && ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft)
 
 	// Clicked: the button was pressed in the last frame and is no longer pressed
-	if b.isLastPressed && !b.isPressed {
-		b.isClicked = true
+	if b.isLastPressed && !b.IsPressed {
+		b.IsClicked = true
 	} else {
-		b.isClicked = false
+		b.IsClicked = false
 	}
 
 	// Save the current pressed status for the next frame
-	b.isLastPressed = b.isPressed
+	b.isLastPressed = b.IsPressed
 
 	return nil
 }
 
 func (b *Button) Draw(screen *ebiten.Image) {
-	fillColor := b.color
-	if b.isPressed {
-		fillColor = b.colorPressed
+	fillColor := b.Color
+	if b.IsPressed {
+		fillColor = b.ColorPressed
 	}
 
-	buttonImage := ebiten.NewImage(b.width, b.height)
+	buttonImage := ebiten.NewImage(b.Width, b.Height)
 	buttonImage.Fill(fillColor)
 	op := &ebiten.DrawImageOptions{}
-	op.GeoM.Translate(float64(b.x), float64(b.y))
+	op.GeoM.Translate(float64(b.X), float64(b.Y))
 	screen.DrawImage(buttonImage, op)
 
 	// Draw the button text
-	textX := b.x + b.width/2 - 15
-	textY := b.y + b.height/2 + 5
-	text.Draw(screen, b.buttonText, basicfont.Face7x13, textX, textY, color.White)
+	textX := b.X + b.Width/2 - 15
+	textY := b.Y + b.Height/2 + 5
+	text.Draw(screen, b.ButtonText, basicfont.Face7x13, textX, textY, color.White)
 }
-
-func (b *Button) X() int          { return b.x }
-func (b *Button) Y() int          { return b.y }
-func (b *Button) Width() int      { return b.width }
-func (b *Button) Height() int     { return b.height }
-func (b *Button) IsClicked() bool { return b.isClicked }
-func (b *Button) Text() string    { return b.buttonText }
