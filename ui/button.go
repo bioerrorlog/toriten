@@ -5,7 +5,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text"
-	"golang.org/x/image/font/basicfont"
+	"golang.org/x/image/font"
 )
 
 type Button struct {
@@ -14,18 +14,20 @@ type Button struct {
 	Color         color.RGBA
 	ColorPressed  color.RGBA
 	ButtonText    string
+	fontFace      font.Face
 	IsPressed     bool
 	IsClicked     bool // Clicked: the button was pressed in the last frame and is no longer pressed
 	isLastPressed bool
 }
 
-func NewButton(x, y, width, height int, buttonText string, color color.RGBA, colorPressed color.RGBA) (*Button, error) {
+func NewButton(x, y, width, height int, buttonText string, fontFace font.Face, color color.RGBA, colorPressed color.RGBA) (*Button, error) {
 	b := &Button{
 		X:             x,
 		Y:             y,
 		Width:         width,
 		Height:        height,
 		ButtonText:    buttonText,
+		fontFace:      fontFace,
 		Color:         color,
 		ColorPressed:  colorPressed,
 		isLastPressed: false,
@@ -66,5 +68,5 @@ func (b *Button) Draw(screen *ebiten.Image) {
 	// Draw the button text
 	textX := b.X + b.Width/2 - 15
 	textY := b.Y + b.Height/2 + 5
-	text.Draw(screen, b.ButtonText, basicfont.Face7x13, textX, textY, color.White)
+	text.Draw(screen, b.ButtonText, b.fontFace, textX, textY, color.White)
 }
