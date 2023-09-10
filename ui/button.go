@@ -70,3 +70,4 @@ func (b *Button) Draw(screen *ebiten.Image) {
 }
 
 func (b *Button) IsClicked() bool { return b.isClicked }
+func (b *Button) Text() string    { return b.buttonText }
