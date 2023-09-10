@@ -15,12 +15,14 @@ type Button struct {
 	ColorPressed  color.RGBA
 	ButtonText    string
 	fontFace      font.Face
+	textXPadding  int
+	textYPadding  int
 	IsPressed     bool
 	IsClicked     bool // Clicked: the button was pressed in the last frame and is no longer pressed
 	isLastPressed bool
 }
 
-func NewButton(x, y, width, height int, buttonText string, fontFace font.Face, color color.RGBA, colorPressed color.RGBA) (*Button, error) {
+func NewButton(x, y, width, height int, buttonText string, fontFace font.Face, textXPadding int, textYPadding int, color color.RGBA, colorPressed color.RGBA) (*Button, error) {
 	b := &Button{
 		X:             x,
 		Y:             y,
@@ -28,6 +30,8 @@ func NewButton(x, y, width, height int, buttonText string, fontFace font.Face, c
 		Height:        height,
 		ButtonText:    buttonText,
 		fontFace:      fontFace,
+		textXPadding:  textXPadding,
+		textYPadding:  textYPadding,
 		Color:         color,
 		ColorPressed:  colorPressed,
 		isLastPressed: false,
@@ -66,7 +70,7 @@ func (b *Button) Draw(screen *ebiten.Image) {
 	screen.DrawImage(buttonImage, op)
 
 	// Draw the button text
-	textX := b.X + b.Width/2 - 15
-	textY := b.Y + b.Height/2 + 5
+	textX := b.X + b.textXPadding
+	textY := b.Y + b.textYPadding
 	text.Draw(screen, b.ButtonText, b.fontFace, textX, textY, color.White)
 }
